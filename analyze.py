@@ -190,7 +190,7 @@ def summarize_data():
 
     md_report_filepath = os.path.join(output_directory, "summary.txt")
     with open(md_report_filepath, "wb") as f:
-        f.write(MD_REPORT.getvalue().encode("utf-8"))
+        f.write(MD_REPORT2.getvalue().encode("utf-8"))
 
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
