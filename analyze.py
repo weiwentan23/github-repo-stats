@@ -172,7 +172,7 @@ def summarize_data():
     """
         )
     )
-    output_directory = "summary"
+    output_directory = "../summary"
     log.info("Testing: %s", output_directory)
     if os.path.exists(output_directory):
         if not os.path.isdir(output_directory):
