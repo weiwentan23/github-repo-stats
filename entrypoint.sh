@@ -223,6 +223,7 @@ python "${GHRS_FILES_ROOT_PATH}/pdf.py" latest-report/report_for_pdf.html latest
 
 # Add directory contents (markdown, HTML, PDF).
 git add latest-report
+git add latest-report/summary.txt
 set +x
 
 echo "generate README.md"
