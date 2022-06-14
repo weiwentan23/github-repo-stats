@@ -183,6 +183,7 @@ sleep 1
 echo "Parse data files, perform aggregation and analysis, generate Markdown report and render as HTML"
 set +e
 set -x
+python "${GHRS_FILES_ROOT_PATH}/summarize.py" \
 python "${GHRS_FILES_ROOT_PATH}/analyze.py" \
     --resources-directory "${GHRS_FILES_ROOT_PATH}/resources" \
     --output-directory latest-report \
