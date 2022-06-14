@@ -189,8 +189,11 @@ def summarize_data():
     os.makedirs(output_directory)
 
     md_report_filepath = os.path.join(output_directory, "summary.txt")
-    with open(md_report_filepath, "wb") as f:
-        f.write(MD_REPORT2.getvalue().encode("utf-8"))
+    # with open(md_report_filepath, "wb") as f:
+    #     f.write(MD_REPORT2.getvalue().encode("utf-8"))
+
+    df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
     # Find minimal first timestamp across dataframes, and maximal last
