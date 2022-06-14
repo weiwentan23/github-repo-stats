@@ -64,6 +64,9 @@ ARGS: Any = None
 MD_REPORT = StringIO()
 JS_FOOTER_LINES: list[str] = []
 
+output_directory = "../summary"
+md_report_filepath = os.path.join(output_directory, "summary.txt")
+
 # https://github.com/vega/vega-embed#options -- use SVG renderer so that PDF
 # export (print) from browser view yields arbitrarily scalable (vector)
 # graphics embedded in the PDF doc, instead of rasterized graphics.
@@ -191,9 +194,6 @@ def summarize_data():
     md_report_filepath = os.path.join(output_directory, "summary.txt")
     # with open(md_report_filepath, "wb") as f:
     #     f.write(MD_REPORT2.getvalue().encode("utf-8"))
-
-    df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
-    df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
     # Find minimal first timestamp across dataframes, and maximal last
@@ -1047,6 +1047,9 @@ def analyse_view_clones_ts_fragments() -> pd.DataFrame:
     df_agg = df_agg.reset_index()
     df_agg_views = df_agg.drop(columns=["clones_unique", "clones_total"])
     df_agg_clones = df_agg.drop(columns=["views_unique", "views_total"])
+
+    df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
     PANEL_WIDTH = "container"
     PANEL_HEIGHT = 200
