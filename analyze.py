@@ -27,6 +27,7 @@ import tempfile
 from typing import Iterable, Set, Any, Optional, Tuple
 from datetime import datetime
 from io import StringIO
+from os.path import exists
 
 import pandas as pd
 import pytz
@@ -203,10 +204,24 @@ def summarize_data():
 
     #df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
     #df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    
+    #data = [[10, 10]]
+    #row = pd.DataFrame([[10, 20]], columns=['first', 'second'], index=['orange'])
+    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
+    columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks']
+    if exists(md_report_filepath):
+        df_current = pd.read_csv(md_report_filepath, index_col=0)
 
-    data = [[df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]]
-    df_summary = pd.DataFrame(data, index=[ARGS.repospec], columns=['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks'])
-    df_summary.to_csv(md_report_filepath, mode='a', header=addHeader)
+        if ARGS.repospec in df_current.index:
+            df_current.loc[ARGS.repospec] = data
+            df_current.to_csv(md_report_filepath)
+        else:
+            df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
+            df_summary.to_csv(md_report_filepath, mode='a', header=False)
+    else:
+        df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
+        df_summary.to_csv(md_report_filepath)
+
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
     # Find minimal first timestamp across dataframes, and maximal last
