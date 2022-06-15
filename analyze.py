@@ -32,7 +32,6 @@ import pandas as pd
 import pytz
 import altair as alt  # type: ignore
 
-
 """
 makes use of code and methods from my other projects at
 https://github.com/jgehrcke/dcos-dev-prod-analysis
@@ -203,9 +202,11 @@ def summarize_data():
     #df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
     #df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
-    data = [[ARGS.repospec, df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum()]]
-    df_summary = pd.DataFrame(data, columns=['repository','cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique'])
-    df_summary.to_csv(md_report_filepath, index_label="repository")
+    data = [[ARGS.repospec, df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers.max(), df_forks.max()]]
+    df_summary = pd.DataFrame(data, columns=['repository','cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks'])
+    df_summary['cumulative_clones_total'] = df_summary['cumulative_clones_total'].apply(lambda x: f'<a href="http://softhints.com/tutorial/{x}">{x}</a>')
+    df_summary.to_html(columns='cumulative_clones_total', escape=False)
+    df_summary.to_csv(md_report_filepath)
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
     # Find minimal first timestamp across dataframes, and maximal last
