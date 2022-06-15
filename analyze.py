@@ -190,18 +190,22 @@ def summarize_data():
     log.info("Create output directory: %s", output_directory)
     os.makedirs(output_directory)
 
-    md_report_filepath = os.path.join(output_directory, "summary.txt")
-    with open(md_report_filepath, "ab") as f:
-        f.write(MD_REPORT2.getvalue().encode("utf-8"))
+    md_report_filepath = os.path.join(output_directory, "summary.csv")
+    #with open(md_report_filepath, "ab") as f:
+    #    f.write(MD_REPORT2.getvalue().encode("utf-8"))
 
-    df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
-    df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    #df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    #df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
-    with open(md_report_filepath, "ab") as f:
-        f.write(MD_REPORT2.getvalue().encode("utf-8"))
+    #with open(md_report_filepath, "ab") as f:
+    #    f.write(MD_REPORT2.getvalue().encode("utf-8"))
 
-    df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
-    df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    #df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    #df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+
+    data = [[ARGS.repospec, 10, 10, 10, 10]]
+    df_summary = pd.DataFrame(data, columns=['repository','cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique'])
+    df_summary.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
     # Find minimal first timestamp across dataframes, and maximal last
