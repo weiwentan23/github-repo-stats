@@ -161,8 +161,8 @@ def main() -> None:
     summarize_data()
 
 def summarize_data():
-    MD_REPORT2 = StringIO()
-    MD_REPORT2.write(
+    MD_SUMMARY = StringIO()
+    MD_SUMMARY.write(
         textwrap.dedent(
             """
     ## Top referrers and paths
@@ -183,18 +183,16 @@ def summarize_data():
                 output_directory,
             )
             sys.exit(1)
-
         #log.info("Remove output directory: %s", output_directory)
         #shutil.rmtree(output_directory)
-        addHeader = False
     else:
         log.info("Create output directory: %s", output_directory)
         os.makedirs(output_directory)
-        addHeader = True
 
-    md_report_filepath = os.path.join(output_directory, "summary.csv")
-    #with open(md_report_filepath, "ab") as f:
-    #    f.write(MD_REPORT2.getvalue().encode("utf-8"))
+    csv_summary_filepath = os.path.join(output_directory, "summary.csv")
+    md_summary_filepath = os.path.join(output_directory, "summary.md")
+    with open(md_summary_filepath, "wb") as f:
+       f.write(MD_SUMMARY.getvalue().encode("utf-8"))
 
     #df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
     #df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
@@ -208,22 +206,20 @@ def summarize_data():
     #data = [[10, 10]]
     #row = pd.DataFrame([[10, 20]], columns=['first', 'second'], index=['orange'])
 
-    # average over past seven days
-
-    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max(), df_agg_clones["clones_total"].tail(3).mean()]
+    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max(), round(df_agg_clones["clones_total"].tail(3).mean(), 2)]
     columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks', 'test']
-    if exists(md_report_filepath):
-        df_current = pd.read_csv(md_report_filepath, index_col=0)
+    if exists(csv_summary_filepath):
+        df_current = pd.read_csv(csv_summary_filepath, index_col=0)
 
         if ARGS.repospec in df_current.index:
             df_current.loc[ARGS.repospec] = data
-            df_current.to_csv(md_report_filepath)
+            df_current.to_csv(csv_summary_filepath)
         else:
             df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
-            df_summary.to_csv(md_report_filepath, mode='a', header=False)
+            df_summary.to_csv(csv_summary_filepath, mode='a', header=False)
     else:
         df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
-        df_summary.to_csv(md_report_filepath)
+        df_summary.to_csv(csv_summary_filepath)
 
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
