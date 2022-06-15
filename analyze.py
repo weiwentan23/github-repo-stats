@@ -202,9 +202,9 @@ def summarize_data():
     #df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
     #df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
-    data = [[ARGS.repospec, df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers.max(), df_forks.max()]]
-    df_summary = pd.DataFrame(data, columns=['repository','cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks'])
-    df_summary['cumulative_clones_total'] = df_summary['cumulative_clones_total'].apply(lambda x: f'<a href="http://softhints.com/tutorial/{x}">{x}</a>')
+    data = [[ARGS.repospec, df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers.max(), df_forks.max(),'<a href="http://softhints.com/tutorial/{x}">{x}</a>']]
+    df_summary = pd.DataFrame(data, columns=['repository','cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks','test'])
+    #df_summary['cumulative_clones_total'] = df_summary['cumulative_clones_total'].apply(lambda x: f'<a href="http://softhints.com/tutorial/{x}">{x}</a>')
     df_summary.to_html(render_links=True, escape=False)
     df_summary.to_csv(md_report_filepath)
 
