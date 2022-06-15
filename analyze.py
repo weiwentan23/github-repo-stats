@@ -83,6 +83,8 @@ def main() -> None:
     parse_args()
     configure_altair()
 
+    global df_stargazers
+    global df_forks
     df_stargazers = read_stars_over_time_from_csv()
     df_forks = read_forks_over_time_from_csv()
 
@@ -189,11 +191,17 @@ def summarize_data():
     os.makedirs(output_directory)
 
     md_report_filepath = os.path.join(output_directory, "summary.txt")
-    # with open(md_report_filepath, "wb") as f:
-    #     f.write(MD_REPORT2.getvalue().encode("utf-8"))
+    with open(md_report_filepath, "wb") as f:
+        f.write(MD_REPORT2.getvalue().encode("utf-8"))
 
     df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
     df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+
+    with open(md_report_filepath, "wb") as f:
+        f.write(MD_REPORT2.getvalue().encode("utf-8"))
+
+    df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
+    df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
     # Find minimal first timestamp across dataframes, and maximal last
