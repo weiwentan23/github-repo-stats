@@ -161,28 +161,7 @@ def main() -> None:
     summarize_data()
 
 def summarize_data():
-    MD_SUMMARY = StringIO()
-    MD_SUMMARY.write(
-        textwrap.dedent(
-            """
-    ## Top referrers and paths
-    Note: Each data point in the plots shown below is influenced by the 14 days
-    leading up to it. Each data point is the arithmetic mean of the "unique
-    visitors per day" metric, built from a time window of 14 days width, and
-    plotted at the right edge of that very time window. That is, these plots
-    respond slowly to change (narrow peaks are smoothed out).
-    """
-        )
-    )
-    MD_SUMMARY.write(
-        textwrap.dedent(
-            f"""
-    | Command | Description |
-    | --- | --- |
-    |{ARGS.repospec}|{df_agg_views["views_total"].sum()}|
-    """
-        ).strip()
-    )
+    
     output_directory = "../summary"
     log.info("Testing: %s", output_directory)
     if os.path.exists(output_directory):
@@ -229,6 +208,21 @@ def summarize_data():
     else:
         df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
         df_summary.to_csv(csv_summary_filepath)
+
+    MD_SUMMARY = StringIO()
+    
+    MD_SUMMARY.write(
+        textwrap.dedent(
+            f"""
+            ## Cumulative Statistics
+
+    |  | {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]} |{columns[4]} |{columns[5]} |
+    | --- | --- | --- | --- | --- | --- | --- |
+    |{ARGS.repospec}|{data[0]}|{data[1]}|{data[2]}|{data[3]}|{data[4]}|{data[5]}|
+    
+    """
+        ).strip()
+    )
 
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
