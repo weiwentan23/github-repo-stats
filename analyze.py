@@ -194,6 +194,8 @@ def summarize_data():
 
     data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max(), round(df_agg_clones["clones_total"].tail(3).mean(), 2)]
     columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks', 'test']
+    columns_average = ['average_clones_total','average_clones_unique','average_views_total','average_views_unique','cumulative_stars','cumulative_forks']
+    data_average = [round(df_agg_clones["clones_total"].tail(3).mean(), 2), round(df_agg_clones["clones_unique"].tail(3).mean(), 2), round(df_agg_views["views_total"].tail(3).mean(), 2), round(df_agg_views["views_unique"].tail(3).mean(), 2), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
 
@@ -207,22 +209,29 @@ def summarize_data():
         df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
         df_summary.to_csv(csv_summary_filepath)
 
+    now_text = NOW.strftime("%Y-%m-%d %H:%M UTC")
     MD_SUMMARY = StringIO()
-    
     MD_SUMMARY.write(
         textwrap.dedent(
             f"""
-            ## Cumulative Statistics
+            ## {now_text}
+            ## Statistics for {ARGS.repospec}
 
-    |  | {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]} |{columns[4]} |{columns[5]} |
-    | --- | --- | --- | --- | --- | --- | --- |
-    |{ARGS.repospec}|{data[0]}|{data[1]}|{data[2]}|{data[3]}|{data[4]}|{data[5]}|
+    |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]} |{columns[4]} |{columns[5]} |
+    | --- | --- | --- | --- | --- | --- |
+    |{data[0]}|{data[1]}|{data[2]}|{data[3]}|{data[4]}|{data[5]}|
+
+    ## Past three days average
+
+    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |{columns_average[4]} |{columns_average[5]} |
+    | --- | --- | --- | --- | --- | --- |
+    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|{data_average[4]}|{data_average[5]}|
 
     """
         ).strip()
     )
 
-    with open(md_summary_filepath, "wb") as f:
+    with open(md_summary_filepath, "ab") as f:
        f.write(MD_SUMMARY.getvalue().encode("utf-8"))
 
 
