@@ -214,14 +214,20 @@ def summarize_data():
     MD_SUMMARY.write(
         textwrap.dedent(
             f"""
-            ## {now_text}
-            ## Statistics for {ARGS.repospec}
+
+    ## {ARGS.repospec}
 
     |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]} |{columns[4]} |{columns[5]} |
     | --- | --- | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|{data[4]}|{data[5]}|
 
     ## Past three days average
+
+    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |{columns_average[4]} |{columns_average[5]} |
+    | --- | --- | --- | --- | --- | --- |
+    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|{data_average[4]}|{data_average[5]}|
+
+    ## Past week average
 
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |{columns_average[4]} |{columns_average[5]} |
     | --- | --- | --- | --- | --- | --- |
