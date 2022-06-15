@@ -207,8 +207,11 @@ def summarize_data():
     
     #data = [[10, 10]]
     #row = pd.DataFrame([[10, 20]], columns=['first', 'second'], index=['orange'])
-    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
-    columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks']
+
+    # average over past seven days
+
+    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max(), df_agg_clones.["clones_total"].tail(3).mean()]
+    columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks', 'test']
     if exists(md_report_filepath):
         df_current = pd.read_csv(md_report_filepath, index_col=0)
 
