@@ -185,9 +185,11 @@ def summarize_data():
 
         #log.info("Remove output directory: %s", output_directory)
         #shutil.rmtree(output_directory)
+        addHeader = False
     else:
         log.info("Create output directory: %s", output_directory)
         os.makedirs(output_directory)
+        addHeader = True
 
     md_report_filepath = os.path.join(output_directory, "summary.csv")
     #with open(md_report_filepath, "ab") as f:
@@ -202,9 +204,9 @@ def summarize_data():
     #df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
     #df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
 
-    data = [[ARGS.repospec, df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]]
-    df_summary = pd.DataFrame(data, columns=['repository','cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks'])
-    df_summary.to_csv(md_report_filepath, mode='a')
+    data = [[df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]]
+    df_summary = pd.DataFrame(data, index=ARGS.repospec, columns=['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks'])
+    df_summary.to_csv(md_report_filepath, mode='a', header=addHeader)
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
     # Find minimal first timestamp across dataframes, and maximal last
