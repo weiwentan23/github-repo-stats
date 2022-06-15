@@ -183,11 +183,11 @@ def summarize_data():
             )
             sys.exit(1)
 
-        log.info("Remove output directory: %s", output_directory)
-        shutil.rmtree(output_directory)
-
-    log.info("Create output directory: %s", output_directory)
-    os.makedirs(output_directory)
+        #log.info("Remove output directory: %s", output_directory)
+        #shutil.rmtree(output_directory)
+    else:
+        log.info("Create output directory: %s", output_directory)
+        os.makedirs(output_directory)
 
     md_report_filepath = os.path.join(output_directory, "summary.csv")
     #with open(md_report_filepath, "ab") as f:
