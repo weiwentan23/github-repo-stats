@@ -174,6 +174,15 @@ def summarize_data():
     """
         )
     )
+    MD_SUMMARY.write(
+        textwrap.dedent(
+            f"""
+    | Command | Description |
+    | --- | --- |
+    |{ARGS.repospec}|{df_agg_views["views_total"].sum()}|
+    """
+        ).strip()
+    )
     output_directory = "../summary"
     log.info("Testing: %s", output_directory)
     if os.path.exists(output_directory):
