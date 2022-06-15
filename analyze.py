@@ -179,8 +179,6 @@ def summarize_data():
 
     csv_summary_filepath = os.path.join(output_directory, "summary.csv")
     md_summary_filepath = os.path.join(output_directory, "summary.md")
-    with open(md_summary_filepath, "wb") as f:
-       f.write(MD_SUMMARY.getvalue().encode("utf-8"))
 
     #df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
     #df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
@@ -219,10 +217,13 @@ def summarize_data():
     |  | {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]} |{columns[4]} |{columns[5]} |
     | --- | --- | --- | --- | --- | --- | --- |
     |{ARGS.repospec}|{data[0]}|{data[1]}|{data[2]}|{data[3]}|{data[4]}|{data[5]}|
-    
+
     """
         ).strip()
     )
+
+    with open(md_summary_filepath, "wb") as f:
+       f.write(MD_SUMMARY.getvalue().encode("utf-8"))
 
 
 def gen_date_axis_lim(dfs: Iterable[pd.DataFrame]) -> Tuple[str, str]:
