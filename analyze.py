@@ -248,8 +248,8 @@ def summarize_data():
                 f"""
         | {df_agg_clones.index[x]} | {df_agg_clones["clones_total"].iloc[x:x+7].mean()}|{df_agg_clones["clones_unique"].iloc[x:x+7].mean()}|{df_agg_views["views_total"].iloc[x:x+7].mean()}|{df_agg_views["views_unique"].iloc[x:x+7].mean()}|
         """
-            )
-        ).strip()
+            ).strip()
+        )
 
     with open(md_summary_filepath, "ab") as f:
        f.write(MD_SUMMARY.getvalue().encode("utf-8"))
