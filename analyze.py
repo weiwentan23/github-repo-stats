@@ -206,12 +206,22 @@ def summarize_data():
         df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
         df_summary.to_csv(csv_summary_filepath)
 
+    # delete if exists
+    with open(md_summary_filepath, "r") as f:
+        lines = f.readlines()
+        for i in range(len(lines)):
+            if lines[i].find("Test") != -1:
+                del lines[i:i + 17]
+                break
+    with open(md_summary_filepath, "w") as f:
+        for x in lines:
+            f.write(x)
+
     now_text = NOW.strftime("%Y-%m-%d %H:%M UTC")
     MD_SUMMARY = StringIO()
     MD_SUMMARY.write(
         textwrap.dedent(
             f"""
-    # now_text
 
     ## {ARGS.repospec}
 
