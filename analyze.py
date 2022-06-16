@@ -224,13 +224,13 @@ def summarize_data():
     ## Past three days average
 
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
-    | --- | --- | --- | --- | --- | --- |
+    | --- | --- | --- | --- |
     |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|
 
     ## Past week average
 
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]}  |
-    | --- | --- | --- | --- | --- | --- |
+    | --- | --- | --- | --- |
     |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|
 
     """
