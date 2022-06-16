@@ -211,7 +211,6 @@ def summarize_data():
     MD_SUMMARY.write(
         textwrap.dedent(
             f"""
-
     ## {ARGS.repospec}
 
     |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]}|
@@ -231,7 +230,7 @@ def summarize_data():
     |{data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
 
     """
-        ).strip()
+        )
     )
 
     with open(md_summary_filepath, "ab") as f:
