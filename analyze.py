@@ -186,16 +186,13 @@ def summarize_data():
     #with open(md_report_filepath, "ab") as f:
     #    f.write(MD_REPORT2.getvalue().encode("utf-8"))
 
-    #df_stargazers.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
-    #df_forks.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
-    
-    #data = [[10, 10]]
-    #row = pd.DataFrame([[10, 20]], columns=['first', 'second'], index=['orange'])
-
-    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max(), round(df_agg_clones["clones_total"].tail(3).mean(), 2)]
-    columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks', 'test']
+    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
+    columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks']
     columns_average = ['average_clones_total','average_clones_unique','average_views_total','average_views_unique']
-    data_average = [round(df_agg_clones["clones_total"].tail(3).mean(), 2), round(df_agg_clones["clones_unique"].tail(3).mean(), 2), round(df_agg_views["views_total"].tail(3).mean(), 2), round(df_agg_views["views_unique"].tail(3).mean(), 2)]
+    data_average1 = [round(df_agg_clones["clones_total"].tail(7).mean(), 2), round(df_agg_clones["clones_unique"].tail(7).mean(), 2), round(df_agg_views["views_total"].tail(7).mean(), 2), round(df_agg_views["views_unique"].tail(7).mean(), 2)]
+    data_average2 = [round(df_agg_clones["clones_total"].tail(14).mean(), 2), round(df_agg_clones["clones_unique"].tail(14).mean(), 2), round(df_agg_views["views_total"].tail(14).mean(), 2), round(df_agg_views["views_unique"].tail(14).mean(), 2)]
+    #data_average3 = [round(df_agg_clones["clones_total"].tail(21).mean(), 2), round(df_agg_clones["clones_unique"].tail(21).mean(), 2), round(df_agg_views["views_total"].tail(21).mean(), 2), round(df_agg_views["views_unique"].tail(21).mean(), 2)]
+    #data_average4 = [round(df_agg_clones["clones_total"].tail(28).mean(), 2), round(df_agg_clones["clones_unique"].tail(28).mean(), 2), round(df_agg_views["views_total"].tail(28).mean(), 2), round(df_agg_views["views_unique"].tail(28).mean(), 2)]
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
 
@@ -217,21 +214,21 @@ def summarize_data():
 
     ## {ARGS.repospec}
 
-    |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]} |{columns[4]} |{columns[5]} |
-    | --- | --- | --- | --- | --- | --- |
-    |{data[0]}|{data[1]}|{data[2]}|{data[3]}|{data[4]}|{data[5]}|
+    |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]}|
+    | --- | --- | --- | --- |
+    |{data[0]}|{data[1]}|{data[2]}|{data[3]}|
 
-    ## Past three days average
+    ## Average of last week
 
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
     | --- | --- | --- | --- |
-    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|
+    |{data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
 
-    ## Past week average
+    ## Average of last two weeks
 
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]}  |
     | --- | --- | --- | --- |
-    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|
+    |{data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
 
     """
         ).strip()
