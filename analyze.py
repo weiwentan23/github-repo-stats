@@ -211,7 +211,7 @@ def summarize_data():
         with open(md_summary_filepath, "r") as f:
             lines = f.readlines()
             for i in range(len(lines)):
-                if lines[i].find("Test") != -1:
+                if lines[i].find(ARGS.repospec) != -1:
                     del lines[i:i + 17]
                     break
         with open(md_summary_filepath, "w") as f:
