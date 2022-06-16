@@ -232,7 +232,7 @@ def summarize_data():
     | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|
 
-    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
+    | something | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
     | --- | --- | --- | --- | --- |
     | last 7 days | {data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
     | last 14 days | {data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
