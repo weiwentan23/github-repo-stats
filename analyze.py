@@ -194,8 +194,8 @@ def summarize_data():
 
     data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max(), round(df_agg_clones["clones_total"].tail(3).mean(), 2)]
     columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks', 'test']
-    columns_average = ['average_clones_total','average_clones_unique','average_views_total','average_views_unique','cumulative_stars','cumulative_forks']
-    data_average = [round(df_agg_clones["clones_total"].tail(3).mean(), 2), round(df_agg_clones["clones_unique"].tail(3).mean(), 2), round(df_agg_views["views_total"].tail(3).mean(), 2), round(df_agg_views["views_unique"].tail(3).mean(), 2), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
+    columns_average = ['average_clones_total','average_clones_unique','average_views_total','average_views_unique']
+    data_average = [round(df_agg_clones["clones_total"].tail(3).mean(), 2), round(df_agg_clones["clones_unique"].tail(3).mean(), 2), round(df_agg_views["views_total"].tail(3).mean(), 2), round(df_agg_views["views_unique"].tail(3).mean(), 2)]
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
 
@@ -223,15 +223,15 @@ def summarize_data():
 
     ## Past three days average
 
-    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |{columns_average[4]} |{columns_average[5]} |
+    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
     | --- | --- | --- | --- | --- | --- |
-    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|{data_average[4]}|{data_average[5]}|
+    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|
 
     ## Past week average
 
-    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |{columns_average[4]} |{columns_average[5]} |
+    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]}  |
     | --- | --- | --- | --- | --- | --- |
-    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|{data_average[4]}|{data_average[5]}|
+    |{data_average[0]}|{data_average[1]}|{data_average[2]}|{data_average[3]}|
 
     """
         ).strip()
