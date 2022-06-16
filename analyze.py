@@ -211,19 +211,21 @@ def summarize_data():
     MD_SUMMARY.write(
         textwrap.dedent(
             f"""
+    # now_text
+
     ## {ARGS.repospec}
 
     |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]}|
     | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|
 
-    ## Average of last week
+    #### Average of last week
 
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
     | --- | --- | --- | --- |
     |{data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
 
-    ## Average of last two weeks
+    #### Average of last two weeks
 
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]}  |
     | --- | --- | --- | --- |
