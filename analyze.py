@@ -220,6 +220,10 @@ def summarize_data():
 
     now_text = NOW.strftime("%Y-%m-%d %H:%M UTC")
     MD_SUMMARY = StringIO()
+
+    # | last 7 days | {data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
+    # | last 14 days | {data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
+
     MD_SUMMARY.write(
         textwrap.dedent(
             f"""
@@ -234,12 +238,18 @@ def summarize_data():
 
     | something | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
     | --- | --- | --- | --- | --- |
-    | last 7 days | {data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
-    | last 14 days | {data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
-
     """
         )
     )
+
+    for x in range(0, len(df_agg_clones), 7):
+        MD_SUMMARY.write(
+            textwrap.dedent(
+                f"""
+        | {df_agg_clones.index[x]} | {df_agg_clones["clones_total"].iloc[x:x+7].mean()}|{df_agg_clones["clones_unique"].iloc[x:x+7].mean()}|{df_agg_views["views_total"].iloc[x:x+7].mean()}|{df_agg_views["views_unique"].iloc[x:x+7].mean()}|
+        """
+            )
+        ).strip()
 
     with open(md_summary_filepath, "ab") as f:
        f.write(MD_SUMMARY.getvalue().encode("utf-8"))
