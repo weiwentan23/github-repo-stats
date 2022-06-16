@@ -212,7 +212,7 @@ def summarize_data():
             lines = f.readlines()
             for i in range(len(lines)):
                 if lines[i].find(ARGS.repospec) != -1:
-                    del lines[i:i + 11]
+                    del lines[i:i + 9]
                     break
         with open(md_summary_filepath, "w") as f:
             for x in lines:
@@ -236,7 +236,7 @@ def summarize_data():
     | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|
 
-    | something | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
+    | Date | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
     | --- | --- | --- | --- | --- |
     """
         )
@@ -246,7 +246,9 @@ def summarize_data():
         MD_SUMMARY.write(
             textwrap.dedent(
                 f"""
-        | {df_agg_clones.index[x]} | {df_agg_clones["clones_total"].iloc[x:x+7].mean()}|{df_agg_clones["clones_unique"].iloc[x:x+7].mean()}|{df_agg_views["views_total"].iloc[x:x+7].mean()}|{df_agg_views["views_unique"].iloc[x:x+7].mean()}|
+        | {df_agg_clones["time_iso8601"].iloc[x]} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
+        {x}
+        {len(df_agg_clones)}
         """
             ).strip()
         )
