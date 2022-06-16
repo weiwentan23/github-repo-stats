@@ -212,7 +212,7 @@ def summarize_data():
             lines = f.readlines()
             for i in range(len(lines)):
                 if lines[i].find(ARGS.repospec) != -1:
-                    del lines[i:i + 17]
+                    del lines[i:i + 11]
                     break
         with open(md_summary_filepath, "w") as f:
             for x in lines:
@@ -226,21 +226,16 @@ def summarize_data():
 
     ## {ARGS.repospec}
 
+    #### {now_text}
+
     |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]}|
     | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|
 
-    #### Average of last week
-
     | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
-    | --- | --- | --- | --- |
-    |{data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
-
-    #### Average of last two weeks
-
-    | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]}  |
-    | --- | --- | --- | --- |
-    |{data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
+    | --- | --- | --- | --- | --- |
+    | last 7 days | {data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
+    | last 14 days | {data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
 
     """
         )
