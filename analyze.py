@@ -260,8 +260,8 @@ def summarize_data():
             df_agg_clones.loc[-1] = [day, 0, 0]
             df_agg_views.index = df_agg_views.index + 1
             df_agg_clones.index = df_agg_clones.index + 1
-            df_new_agg_views = df_agg_views.sort_index()
-            df_new_agg_clones = df_agg_clones.sort_index()
+            df_new_agg_views = df_agg_views.sort_values(by='time',ascending=True)
+            df_new_agg_clones = df_agg_clones.sort_values(by='time',ascending=True)
     log.info(df_agg_views["time"].values)
     log.info(df_new_agg_clones)
     log.info(df_new_agg_views)
