@@ -25,7 +25,7 @@ import sys
 import tempfile
 
 from typing import Iterable, Set, Any, Optional, Tuple
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import StringIO
 from os.path import exists
 
@@ -246,6 +246,15 @@ def summarize_data():
     """
         ).rstrip()
     )
+
+    delta = df_agg_views.index.values[len(df_agg_views.index) - 1] - df_agg_views.index.values[0]
+    days = delta.astype('timedelta64[D]').astype(int)
+
+    for i in range(days):
+        day = pd.to_datetime(df_agg_views.index.values[0]) + timedelta(days=i)
+        if day not in df_agg_views.index:
+            df_agg_views.loc[day] = [0, 0]
+    df = df_agg_views.sort_index()
 
     for x in range(0, len(df_agg_views), 7):
         MD_SUMMARY.write(
