@@ -257,20 +257,20 @@ def summarize_data():
         day = pd.to_datetime(df_agg_views["time"].iloc[0]) + timedelta(days=i)
         if day.strftime("%Y-%m-%d") not in temp:
             df_agg_views.loc[-1] = [day, 0, 0]
+            df_agg_clones.loc[-1] = [day, 0, 0]
             df_agg_views.index = df_agg_views.index + 1
-            #df_agg_views = df_agg_views.sort_index()
+            df_agg_clones.index = df_agg_clones.index + 1
+            df_new_agg_views = df_agg_views.sort_index()
+            df_new_agg_clones = df_agg_clones.sort_index()
     log.info(df_agg_views["time"].values)
     log.info(df_agg_views)
     
 
-    for x in range(0, len(df_agg_views), 7):
+    for x in range(0, len(df_new_agg_views), 7):
         MD_SUMMARY.write(
             textwrap.dedent(
                 f"""
-        | {df_agg_views["time"].iloc[x].strftime("%Y-%m-%d")} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
-        {df_agg_views.head()}
-        {len(df)}
-        {len(df_agg_views)}
+        | {df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")} | {round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
         """
             ).rstrip()
         )
