@@ -206,13 +206,19 @@ def summarize_data():
         df_summary.to_csv(csv_summary_filepath)
 
     # delete if exists
+    start = 0
     if exists(md_summary_filepath):
         with open(md_summary_filepath, "r") as f:
             lines = f.readlines()
             for i in range(len(lines)):
-                if lines[i].find(ARGS.repospec) != -1:
-                    del lines[i:i + 9]
-                    break
+                if start == 0:
+                    if lines[i].find(ARGS.repospec) != -1:
+                        start = i
+                else:
+                    if lines[i].find("## ShimmerEngineering") != -1:
+                        del lines[start:i]
+                        break
+                        
         with open(md_summary_filepath, "w") as f:
             for x in lines:
                 f.write(x)
@@ -247,7 +253,7 @@ def summarize_data():
                 f"""
         | {df_agg_views["time"].iloc[x].strftime("%Y-%m-%d")} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
         """
-            )
+            ).rstrip()
         )
 
     with open(md_summary_filepath, "ab") as f:
