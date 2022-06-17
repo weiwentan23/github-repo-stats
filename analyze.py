@@ -186,13 +186,12 @@ def summarize_data():
     #with open(md_report_filepath, "ab") as f:
     #    f.write(MD_REPORT2.getvalue().encode("utf-8"))
 
-    data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
+    data = [df_agg["clones_total"].sum(), df_agg["clones_unique"].sum(), df_agg["views_total"].sum(), df_agg["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
     columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks']
     columns_average = ['average_clones_total','average_clones_unique','average_views_total','average_views_unique']
-    data_average1 = [round(df_agg_clones["clones_total"].tail(7).mean(), 2), round(df_agg_clones["clones_unique"].tail(7).mean(), 2), round(df_agg_views["views_total"].tail(7).mean(), 2), round(df_agg_views["views_unique"].tail(7).mean(), 2)]
-    data_average2 = [round(df_agg_clones["clones_total"].tail(14).mean(), 2), round(df_agg_clones["clones_unique"].tail(14).mean(), 2), round(df_agg_views["views_total"].tail(14).mean(), 2), round(df_agg_views["views_unique"].tail(14).mean(), 2)]
-    #data_average3 = [round(df_agg_clones["clones_total"].tail(21).mean(), 2), round(df_agg_clones["clones_unique"].tail(21).mean(), 2), round(df_agg_views["views_total"].tail(21).mean(), 2), round(df_agg_views["views_unique"].tail(21).mean(), 2)]
-    #data_average4 = [round(df_agg_clones["clones_total"].tail(28).mean(), 2), round(df_agg_clones["clones_unique"].tail(28).mean(), 2), round(df_agg_views["views_total"].tail(28).mean(), 2), round(df_agg_views["views_unique"].tail(28).mean(), 2)]
+    data_average1 = [round(df_agg["clones_total"].tail(7).mean(), 2), round(df_agg["clones_unique"].tail(7).mean(), 2), round(df_agg["views_total"].tail(7).mean(), 2), round(df_agg["views_unique"].tail(7).mean(), 2)]
+    data_average2 = [round(df_agg["clones_total"].tail(14).mean(), 2), round(df_agg["clones_unique"].tail(14).mean(), 2), round(df_agg["views_total"].tail(14).mean(), 2), round(df_agg["views_unique"].tail(14).mean(), 2)]
+
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
 
@@ -242,13 +241,13 @@ def summarize_data():
         )
     )
 
-    for x in range(0, len(df_agg_clones), 7):
+    for x in range(0, len(df_agg), 7):
         MD_SUMMARY.write(
             textwrap.dedent(
                 f"""
-        | {df_agg_clones["time"].iloc[x]} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
+        | {df_agg["time"].iloc[x].split(" ")[0]} | {round(df_agg["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg["views_unique"].iloc[x:x+7].mean(), 2)}|
         """
-            ).strip()
+            )
         )
 
     with open(md_summary_filepath, "ab") as f:
@@ -1041,6 +1040,7 @@ def analyse_view_clones_ts_fragments() -> pd.DataFrame:
     # data) we want to look for the maximum data value for any given timestamp.
     # Using that method, we effectively ignore said cutoff artifact. In short:
     # group by timestamp (index), take the maximum.
+    global df_agg
     df_agg: pd.DataFrame = dfall.groupby(dfall.index).max()
     log.info("shape of dataframe after dropping duplicates: %s", df_agg.shape)
 
@@ -1106,8 +1106,6 @@ def analyse_view_clones_ts_fragments() -> pd.DataFrame:
     # so that df.index is kept meaningful.
     df_agg_for_return = df_agg
     df_agg = df_agg.reset_index()
-    global df_agg_views
-    global df_agg_clones
     df_agg_views = df_agg.drop(columns=["clones_unique", "clones_total"])
     df_agg_clones = df_agg.drop(columns=["views_unique", "views_total"])
 
