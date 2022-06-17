@@ -258,7 +258,7 @@ def summarize_data():
             log.info(df_agg_views.head())
             df_agg_views.loc[-1] = [day, 0, 0]
             df_agg_views.index = df_agg_views.index + 1
-            df_agg_views = df_agg_views.sort_index()
+            #df_agg_views = df_agg_views.sort_index()
     log.info(df_agg_views)
     
 
