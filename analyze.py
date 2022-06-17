@@ -252,6 +252,8 @@ def summarize_data():
             textwrap.dedent(
                 f"""
         | {df_agg_views["time"].iloc[x].strftime("%Y-%m-%d")} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
+        {len(df)}
+        {len(df_agg_views)}
         """
             ).rstrip()
         )
