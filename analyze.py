@@ -248,14 +248,9 @@ def summarize_data():
     )
 
     delta = df_agg_views["time"].iloc[len(df_agg_views.index) - 1] - df_agg_views["time"].iloc[0]
-    log.info(delta)
-    #days = delta.days # delta.astype('timedelta64[D]').astype(int)
-    log.info(delta.days)
-
     for i in range(delta.days):
         day = pd.to_datetime(df_agg_views["time"].iloc[0]) + timedelta(days=i)
-        if day not in df_agg_views.index:
-            log.info(df_agg_views.head())
+        if day not in df_agg_views["time"].values:
             df_agg_views.loc[-1] = [day, 0, 0]
             df_agg_views.index = df_agg_views.index + 1
             #df_agg_views = df_agg_views.sort_index()
