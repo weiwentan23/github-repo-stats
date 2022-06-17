@@ -244,7 +244,7 @@ def summarize_data():
     | Date | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
     | --- | --- | --- | --- | --- |
     """
-        )
+        ).rstrip()
     )
 
     for x in range(0, len(df_agg_views), 7):
