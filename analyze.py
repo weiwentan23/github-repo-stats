@@ -263,7 +263,8 @@ def summarize_data():
             df_new_agg_views = df_agg_views.sort_index()
             df_new_agg_clones = df_agg_clones.sort_index()
     log.info(df_agg_views["time"].values)
-    log.info(df_agg_views)
+    log.info(df_new_agg_clones)
+    log.info(df_new_agg_views)
     
 
     for x in range(0, len(df_new_agg_views), 7):
