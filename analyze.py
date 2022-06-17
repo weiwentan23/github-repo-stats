@@ -246,7 +246,7 @@ def summarize_data():
         MD_SUMMARY.write(
             textwrap.dedent(
                 f"""
-        | {df_agg_clones["time_iso8601"].iloc[x]} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
+        | {df["time_iso8601"].iloc[x]} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
         {x}
         {len(df_agg_clones)}
         """
@@ -881,6 +881,7 @@ def analyse_view_clones_ts_fragments() -> pd.DataFrame:
         log.info("attempt to parse %s", p)
         snapshot_time = _get_snapshot_time_from_path(p, basename_suffix)
 
+        global df
         df = pd.read_csv(
             p,
             index_col=["time_iso8601"],
