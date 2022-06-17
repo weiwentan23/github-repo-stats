@@ -253,7 +253,7 @@ def summarize_data():
     for i in range(days):
         day = pd.to_datetime(df_agg_views.index.values[0]) + timedelta(days=i)
         if day not in df_agg_views.index:
-            df_agg_views.loc[day] = [0, 0]
+            df_agg_views.loc[day] = [day, 0, 0]
     df = df_agg_views.sort_index()
 
     for x in range(0, len(df_agg_views), 7):
@@ -261,6 +261,7 @@ def summarize_data():
             textwrap.dedent(
                 f"""
         | {df_agg_views["time"].iloc[x].strftime("%Y-%m-%d")} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
+        {df_agg_views.head()}
         {len(df)}
         {len(df_agg_views)}
         """
