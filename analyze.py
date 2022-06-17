@@ -161,7 +161,6 @@ def main() -> None:
     summarize_data()
 
 def summarize_data():
-    
     output_directory = "../summary"
     log.info("Testing: %s", output_directory)
     if os.path.exists(output_directory):
@@ -171,8 +170,6 @@ def summarize_data():
                 output_directory,
             )
             sys.exit(1)
-        #log.info("Remove output directory: %s", output_directory)
-        #shutil.rmtree(output_directory)
     else:
         log.info("Create output directory: %s", output_directory)
         os.makedirs(output_directory)
@@ -207,7 +204,7 @@ def summarize_data():
                     if lines[i].find(ARGS.repospec) != -1:
                         start = i
                 else:
-                    if lines[i].find("## ShimmerEngineering") != -1:
+                    if lines[i].find("ShimmerEngineering") != -1:
                         del lines[start:i]
                         break
                         
