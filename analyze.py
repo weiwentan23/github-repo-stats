@@ -251,7 +251,7 @@ def summarize_data():
     log.info(df_agg_views["time"].values)
     temp = []
     for x in df_agg_views["time"].values:
-        temp.append(pd.to_datetime(x))
+        temp.append(pd.to_datetime(x).to_pydatetime())
     log.info(temp)
     for i in range(delta.days):
         day = pd.to_datetime(df_agg_views["time"].iloc[0]) + timedelta(days=i)
