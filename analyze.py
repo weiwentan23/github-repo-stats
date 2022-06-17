@@ -246,10 +246,7 @@ def summarize_data():
         MD_SUMMARY.write(
             textwrap.dedent(
                 f"""
-        | df_agg_clones["time"].iloc(x) | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
-        
-        {x}
-        {len(df_agg_clones)}
+        | {df_agg_clones["time"].iloc(x)} | {round(df_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
         """
             ).strip()
         )
