@@ -251,11 +251,11 @@ def summarize_data():
     log.info(df_agg_views["time"].values)
     temp = []
     for x in df_agg_views["time"].values:
-        temp.append(x.astype(datetime).strftime("%Y-%m-%d"))
+        temp.append(x.astype(datetime))
     log.info(temp)
     for i in range(delta.days):
         day = pd.to_datetime(df_agg_views["time"].iloc[0]) + timedelta(days=i)
-        if day.strftime("%Y-%m-%d") not in df_agg_views["time"].values.astype(datetime).strftime("%Y-%m-%d"):
+        if day not in df_agg_views["time"].values.astype(datetime):
             df_agg_views.loc[-1] = [day, 0, 0]
             df_agg_views.index = df_agg_views.index + 1
             #df_agg_views = df_agg_views.sort_index()
