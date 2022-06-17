@@ -180,17 +180,9 @@ def summarize_data():
     csv_summary_filepath = os.path.join(output_directory, "summary.csv")
     md_summary_filepath = os.path.join(output_directory, "summary.md")
 
-    #df_agg_views.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
-    #df_agg_clones.to_csv(md_report_filepath, header=None, index=None, sep=' ', mode='a')
-
-    #with open(md_report_filepath, "ab") as f:
-    #    f.write(MD_REPORT2.getvalue().encode("utf-8"))
-
     data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
     columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks']
-    columns_average = ['average_clones_total','average_clones_unique','average_views_total','average_views_unique']
-    data_average1 = [round(df_agg_clones["clones_total"].tail(7).mean(), 2), round(df_agg_clones["clones_unique"].tail(7).mean(), 2), round(df_agg_views["views_total"].tail(7).mean(), 2), round(df_agg_views["views_unique"].tail(7).mean(), 2)]
-    data_average2 = [round(df_agg_clones["clones_total"].tail(14).mean(), 2), round(df_agg_clones["clones_unique"].tail(14).mean(), 2), round(df_agg_views["views_total"].tail(14).mean(), 2), round(df_agg_views["views_unique"].tail(14).mean(), 2)]
+    columns_average = ['date','average_clones_total','average_clones_unique','average_views_total','average_views_unique']
 
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
@@ -205,7 +197,7 @@ def summarize_data():
         df_summary = pd.DataFrame([data], index=[ARGS.repospec], columns=columns)
         df_summary.to_csv(csv_summary_filepath)
 
-    # delete if exists
+    # delete from summary.md if exists
     start = 0
     if exists(md_summary_filepath):
         with open(md_summary_filepath, "r") as f:
@@ -222,37 +214,28 @@ def summarize_data():
         with open(md_summary_filepath, "w") as f:
             for x in lines:
                 f.write(x)
-
-    now_text = NOW.strftime("%Y-%m-%d %H:%M UTC")
+                
     MD_SUMMARY = StringIO()
-
-    # | last 7 days | {data_average1[0]}|{data_average1[1]}|{data_average1[2]}|{data_average1[3]}|
-    # | last 14 days | {data_average2[0]}|{data_average2[1]}|{data_average2[2]}|{data_average2[3]}|
-
     MD_SUMMARY.write(
         textwrap.dedent(
             f"""
 
     ## {ARGS.repospec}
 
-    #### {now_text}
-
-    |  {columns[0]} | {columns[1]} |{columns[2]} |{columns[3]}|
+    |{columns[0]}|{columns[1]}|{columns[2]}|{columns[3]}|
     | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|
 
-    | Date | {columns_average[0]} | {columns_average[1]} |{columns_average[2]} |{columns_average[3]} |
+    |{columns_average[0]}|{columns_average[1]}|{columns_average[2]}|{columns_average[3]}|{columns_average[4]}|
     | --- | --- | --- | --- | --- |
     """
         ).rstrip()
     )
 
     delta = df_agg_views["time"].iloc[len(df_agg_views.index) - 1] - df_agg_views["time"].iloc[0]
-    log.info(df_agg_views["time"].values)
     temp = []
     for x in df_agg_views["time"].values:
         temp.append(pd.to_datetime(x).to_pydatetime().strftime("%Y-%m-%d"))
-    log.info(temp)
     for i in range(delta.days):
         day = pd.to_datetime(df_agg_views["time"].iloc[0]) + timedelta(days=i)
         if day.strftime("%Y-%m-%d") not in temp:
@@ -260,18 +243,14 @@ def summarize_data():
             df_agg_clones.loc[-1] = [day, 0, 0]
             df_agg_views.index = df_agg_views.index + 1
             df_agg_clones.index = df_agg_clones.index + 1
-            df_new_agg_views = df_agg_views.sort_values(by='time',ascending=True)
-            df_new_agg_clones = df_agg_clones.sort_values(by='time',ascending=True)
-    log.info(df_agg_views["time"].values)
-    log.info(df_new_agg_clones)
-    log.info(df_new_agg_views)
-    
+    df_new_agg_views = df_agg_views.sort_values(by='time',ascending=True)
+    df_new_agg_clones = df_agg_clones.sort_values(by='time',ascending=True)
 
     for x in range(0, len(df_new_agg_views), 7):
         MD_SUMMARY.write(
             textwrap.dedent(
                 f"""
-        | {df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")} | {round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
+        |{df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")}|{round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
         """
             ).rstrip()
         )
