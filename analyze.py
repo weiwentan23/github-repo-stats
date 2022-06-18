@@ -243,6 +243,8 @@ def summarize_data():
     df_new_agg_views = df_agg_views.sort_values(by='time',ascending=True)
     df_new_agg_clones = df_agg_clones.sort_values(by='time',ascending=True)
     log.info(df_forks)
+    log.info(df.index)
+    log.info(df_forks["time"])
     for x in range(0, len(df_new_agg_views), 7):
         for y in range(0, len(df_forks) - 1):
             log.info(df_forks["time"].iloc[y])
