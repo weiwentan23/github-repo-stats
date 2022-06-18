@@ -247,10 +247,10 @@ def summarize_data():
     cum_stars = 0
     for x in range(0, len(df_new_agg_views), 7):
         for y in range(0, len(df_forks)):
-            if df_new_agg_views["time"].iloc[x] >= df_forks.index.date[y]:
+            if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_forks.index.date[y]:
                 cum_forks = df_forks["forks_cumulative"].iloc[y]
         for z in range(0, len(df_stargazers)):
-            if df_new_agg_views["time"].iloc[x] >= df_stargazers.index.date[z]:
+            if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_stargazers.index.date[z]:
                 cum_stars = df_stargazers["stars_cumulative"].iloc[z]
         MD_SUMMARY.write(
             textwrap.dedent(
