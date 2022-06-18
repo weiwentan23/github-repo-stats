@@ -178,9 +178,9 @@ def summarize_data():
     md_summary_filepath = os.path.join(output_directory, "summary.md")
 
     data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
-    columns = ['cumulative_clones_total','cumulative_clones_unique','cumulative_views_total','cumulative_views_unique','cumulative_stars','cumulative_forks']
-    columns_average = ['date','average_clones_total','average_clones_unique','average_views_total','average_views_unique']
-    log.info(df_forks)
+    columns = ['cum_clones_total','cum_clones_unique','cum_views_total','cum_views_unique','cum_stars','cum_forks']
+    columns_average = ['date','avg_clones_total','avg_clones_unique','avg_views_total','avg_views_unique','cum_forks']
+
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
 
@@ -223,8 +223,8 @@ def summarize_data():
     | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|
 
-    |{columns_average[0]}|{columns_average[1]}|{columns_average[2]}|{columns_average[3]}|{columns_average[4]}|
-    | --- | --- | --- | --- | --- |
+    |{columns_average[0]}|{columns_average[1]}|{columns_average[2]}|{columns_average[3]}|{columns_average[4]}|{columns_average[5]}|
+    | --- | --- | --- | --- | --- | --- |
     """
         ).rstrip()
     )
@@ -244,10 +244,13 @@ def summarize_data():
     df_new_agg_clones = df_agg_clones.sort_values(by='time',ascending=True)
 
     for x in range(0, len(df_new_agg_views), 7):
+        for y in range(0, len(df_forks)):
+            if df_new_agg_views["time"].iloc[x] >= df_forks["time"].iloc[y]:
+                cum_forks = df_forks["forks_cumulative"].iloc[y]
         MD_SUMMARY.write(
             textwrap.dedent(
                 f"""
-        |{df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")}|{round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|
+        |{df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")}|{round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|{cum_forks}|
         """
             ).rstrip()
         )
