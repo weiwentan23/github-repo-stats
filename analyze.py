@@ -246,9 +246,9 @@ def summarize_data():
     log.info(df.index)
     for x in range(0, len(df_new_agg_views), 7):
         for y in range(0, len(df_forks) - 1):
-            log.info(df_forks.index.iloc[y])
+            log.info(df_forks.index.date[y])
             cum_forks = 0
-            if df_new_agg_views["time"].iloc[x] >= df_forks.index.iloc[y]:
+            if df_new_agg_views["time"].iloc[x] >= df_forks.index.date[y]:
                 cum_forks = df_forks["forks_cumulative"].iloc[y]
         MD_SUMMARY.write(
             textwrap.dedent(
