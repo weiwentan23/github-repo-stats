@@ -252,9 +252,12 @@ def summarize_data():
         for z in range(0, len(df_stargazers)):
             if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_stargazers.index.date[z]:
                 cum_stars = df_stargazers["stars_cumulative"].iloc[z]
+        log.info(x)
         if x + 7 < len(df_new_agg_views) - 1:
+            log.info("less than")
             end_date = df_new_agg_views["time"].iloc[x + 7].strftime("%Y-%m-%d")
         else:
+            log.info("more than")
             end_date = df_new_agg_views["time"].iloc[len(df_new_agg_views) - 1].strftime("%Y-%m-%d")
         MD_SUMMARY.write(
                 textwrap.dedent(
