@@ -255,7 +255,7 @@ def summarize_data():
         if x + 7 < len(df_new_agg_views):
             end_date = df_new_agg_views["time"].iloc[x + 7].strftime("%Y-%m-%d")
         else:
-            end_date = df_new_agg_views["time"].iloc[len(df_new_agg_views)].strftime("%Y-%m-%d")
+            end_date = df_new_agg_views["time"].iloc[len(df_new_agg_views) - 1].strftime("%Y-%m-%d")
         MD_SUMMARY.write(
                 textwrap.dedent(
                     f"""
