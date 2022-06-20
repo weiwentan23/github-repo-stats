@@ -229,7 +229,11 @@ def summarize_data():
         ).rstrip()
     )
 
-    delta = datetime.today() - df_agg_views["time"].iloc[0]
+    #delta = df_agg_views["time"].iloc[len(df_agg_views.index) - 1] - df_agg_views["time"].iloc[0]
+    delta = datetime.today() - pd.to_datetime(df_agg_views["time"].iloc[0])
+    log.info(datetime.today())
+    log.info(df_agg_views["time"].iloc[0])
+    log.info(pd.to_datetime(df_agg_views["time"].iloc[0]))
     temp = []
     for x in df_agg_views["time"].values:
         temp.append(pd.to_datetime(x).to_pydatetime().strftime("%Y-%m-%d"))
