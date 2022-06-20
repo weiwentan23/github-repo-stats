@@ -179,7 +179,7 @@ def summarize_data():
 
     data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
     columns = ['cum_clones_total','cum_clones_unique','cum_views_total','cum_views_unique','cum_stars','cum_forks']
-    columns_average = ['from','to','avg_clones_total','avg_clones_unique','avg_views_total','avg_views_unique','cum_stars','cum_forks']
+    columns_average = ['from','to','avg_clone_total','avg_clone_unique','avg_view_total','avg_view_unique','cum_stars','cum_forks']
 
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
@@ -229,7 +229,7 @@ def summarize_data():
         ).rstrip()
     )
 
-    delta = df_agg_views["time"].iloc[len(df_agg_views.index) - 1] - df_agg_views["time"].iloc[0]
+    delta = datetime.datetime.today() - df_agg_views["time"].iloc[0]
     temp = []
     for x in df_agg_views["time"].values:
         temp.append(pd.to_datetime(x).to_pydatetime().strftime("%Y-%m-%d"))
@@ -245,7 +245,6 @@ def summarize_data():
     
     cum_forks = 0
     cum_stars = 0
-    log.info(df_new_agg_views)
     for x in range(0, len(df_new_agg_views), 7):
         for y in range(0, len(df_forks)):
             if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_forks.index.date[y]:
@@ -253,13 +252,10 @@ def summarize_data():
         for z in range(0, len(df_stargazers)):
             if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_stargazers.index.date[z]:
                 cum_stars = df_stargazers["stars_cumulative"].iloc[z]
-        log.info(x)
         if x + 6 < len(df_new_agg_views):
-            log.info("less than")
             start_date = df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")
             end_date = df_new_agg_views["time"].iloc[x+6].strftime("%Y-%m-%d")
         else:
-            log.info("more than")
             start_date = df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")
             end_date = df_new_agg_views["time"].iloc[len(df_new_agg_views) - 1].strftime("%Y-%m-%d")
         MD_SUMMARY.write(
