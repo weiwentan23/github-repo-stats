@@ -252,13 +252,17 @@ def summarize_data():
         for z in range(0, len(df_stargazers)):
             if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_stargazers.index.date[z]:
                 cum_stars = df_stargazers["stars_cumulative"].iloc[z]
+        if x + 7 < len(df_new_agg_views):
+            end_date = df_new_agg_views["time"].iloc[x + 7].strftime("%Y-%m-%d")
+        else:
+            end_date = df_new_agg_views["time"].iloc[len(df_new_agg_views)].strftime("%Y-%m-%d")
         MD_SUMMARY.write(
-            textwrap.dedent(
-                f"""
-        |{df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")}|{round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|{cum_stars}|{cum_forks}|
-        """
-            ).rstrip()
-        )
+                textwrap.dedent(
+                    f"""
+            |{end_date}|{round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|{cum_stars}|{cum_forks}|
+            """
+                ).rstrip()
+            )
 
     with open(md_summary_filepath, "ab") as f:
        f.write(MD_SUMMARY.getvalue().encode("utf-8"))
