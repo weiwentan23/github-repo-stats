@@ -230,7 +230,7 @@ def summarize_data():
     )
 
     #delta = df_agg_views["time"].iloc[len(df_agg_views.index) - 1] - df_agg_views["time"].iloc[0]
-    delta = datetime.today() - pd.to_datetime(df_agg_views["time"].iloc[0])
+    delta = datetime.today() - pd.to_datetime(df_agg_views["time"].iloc[0]).replace(tzinfo=None) 
     log.info(datetime.today())
     log.info(df_agg_views["time"].iloc[0])
     log.info(pd.to_datetime(df_agg_views["time"].iloc[0]))
