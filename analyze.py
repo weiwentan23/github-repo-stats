@@ -179,7 +179,7 @@ def summarize_data():
 
     data = [df_agg_clones["clones_total"].sum(), df_agg_clones["clones_unique"].sum(), df_agg_views["views_total"].sum(), df_agg_views["views_unique"].sum(), df_stargazers["stars_cumulative"].max(), df_forks["forks_cumulative"].max()]
     columns = ['cum_clones_total','cum_clones_unique','cum_views_total','cum_views_unique','cum_stars','cum_forks']
-    columns_average = ['date','avg_clones_total','avg_clones_unique','avg_views_total','avg_views_unique','cum_stars','cum_forks']
+    columns_average = ['from','to','avg_clones_total','avg_clones_unique','avg_views_total','avg_views_unique','cum_stars','cum_forks']
 
     if exists(csv_summary_filepath):
         df_current = pd.read_csv(csv_summary_filepath, index_col=0)
@@ -223,8 +223,8 @@ def summarize_data():
     | --- | --- | --- | --- | --- | --- |
     |{data[0]}|{data[1]}|{data[2]}|{data[3]}|{data[4]}|{data[5]}|
 
-    |{columns_average[0]}|{columns_average[1]}|{columns_average[2]}|{columns_average[3]}|{columns_average[4]}|{columns_average[5]}|{columns_average[6]}|
-    | --- | --- | --- | --- | --- | --- | --- |
+    |{columns_average[0]}|{columns_average[1]}|{columns_average[2]}|{columns_average[3]}|{columns_average[4]}|{columns_average[5]}|{columns_average[6]}|{columns_average[7]}|
+    | --- | --- | --- | --- | --- | --- | --- | --- |
     """
         ).rstrip()
     )
@@ -254,16 +254,18 @@ def summarize_data():
             if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_stargazers.index.date[z]:
                 cum_stars = df_stargazers["stars_cumulative"].iloc[z]
         log.info(x)
-        if x + 7 < len(df_new_agg_views) - 1:
+        if x + 6 < len(df_new_agg_views):
             log.info("less than")
-            end_date = df_new_agg_views["time"].iloc[x + 7].strftime("%Y-%m-%d")
+            start_date = df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")
+            end_date = df_new_agg_views["time"].iloc[x+6].strftime("%Y-%m-%d")
         else:
             log.info("more than")
+            start_date = df_new_agg_views["time"].iloc[x].strftime("%Y-%m-%d")
             end_date = df_new_agg_views["time"].iloc[len(df_new_agg_views) - 1].strftime("%Y-%m-%d")
         MD_SUMMARY.write(
                 textwrap.dedent(
                     f"""
-            |{end_date}|{round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|{cum_stars}|{cum_forks}|
+            |{start_date}|{end_date}|{round(df_new_agg_clones["clones_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_clones["clones_unique"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_total"].iloc[x:x+7].mean(), 2)}|{round(df_new_agg_views["views_unique"].iloc[x:x+7].mean(), 2)}|{cum_stars}|{cum_forks}|
             """
                 ).rstrip()
             )
