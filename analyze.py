@@ -231,13 +231,10 @@ def summarize_data():
 
     #delta = df_agg_views["time"].iloc[len(df_agg_views.index) - 1] - df_agg_views["time"].iloc[0]
     delta = datetime.today() - pd.to_datetime(df_agg_views["time"].iloc[0]).replace(tzinfo=None) 
-    log.info(datetime.today())
-    log.info(df_agg_views["time"].iloc[0])
-    log.info(pd.to_datetime(df_agg_views["time"].iloc[0]))
     temp = []
     for x in df_agg_views["time"].values:
         temp.append(pd.to_datetime(x).to_pydatetime().strftime("%Y-%m-%d"))
-    for i in range(delta.days):
+    for i in range(delta.days + 1):
         day = pd.to_datetime(df_agg_views["time"].iloc[0]) + timedelta(days=i)
         if day.strftime("%Y-%m-%d") not in temp:
             df_agg_views.loc[-1] = [day, 0, 0]
