@@ -245,6 +245,7 @@ def summarize_data():
     
     cum_forks = 0
     cum_stars = 0
+    log.info(df_new_agg_views)
     for x in range(0, len(df_new_agg_views), 7):
         for y in range(0, len(df_forks)):
             if df_new_agg_views["time"].iloc[x] + timedelta(days=7) >= df_forks.index.date[y]:
