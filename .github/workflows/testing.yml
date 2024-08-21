@@ -26,7 +26,7 @@ jobs:
       - name: Check out ASM_BaseStation repository
         uses: actions/checkout@main
         with:
-          repository: Verisense-Health-Inc/ASM_BaseStation
+          repository: weiwentan23/TestLambda
           token: ${{ github.event.inputs.token }}
 
       - name: Set up .NET Core
