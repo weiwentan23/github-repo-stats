@@ -12,6 +12,9 @@ on:
       region:
         description: "AWS Region"
         required: true
+      token:
+        description: "Github Token"
+        required: true
 
 
 jobs:
@@ -20,13 +23,11 @@ jobs:
     env:
       CF_STACK_FILE_PARSER_2025E: ${{ vars.CF_STACK_FILE_PARSER_2025E }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Clone ASM_BaseStation repository
-        run: |
-          git clone https://github.com/Verisense-Health-Inc/ASM_BaseStation.git
-          cd ASM_BaseStation
+      - name: Check out ASM_BaseStation repository
+        uses: actions/checkout@main
+        with:
+          repository: Verisense-Health-Inc/ASM_BaseStation
+          token: ${{ github.event.inputs.token }}
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
