@@ -80,6 +80,7 @@ jobs:
           dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip && \
           sam build && \
           sam deploy \
+            --guided
             --stack-name ${CF_STACK_FILE_PARSER_2025E} \
             --s3-bucket "verisense-assets-0148" \
             --s3-prefix "sam/${CF_STACK_FILE_PARSER_2025E}" \
