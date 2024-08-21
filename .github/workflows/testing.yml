@@ -34,7 +34,23 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '7.x'
+          dotnet-version: '8.x'
+
+      - name: Restore .NET dependencies
+        run: |
+          cd TestLambdaFunction
+          dotnet restore
+
+      - name: Build .NET project
+        run: |
+          cd TestLambdaFunction
+          dotnet build --configuration Release
+
+      - name: Package Lambda function
+        run: |
+          cd TestLambdaFunction
+          dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip
+
 
       - name: Install AWS CLI
         run: |
@@ -54,10 +70,10 @@ jobs:
 
       - name: "[File Parser 2025E] Deploy Lambda Function"
         run: |
-          cd aws/lambda/file-parser-2025e && \
+          cd TestLambdaFunction && \
           dotnet restore && \
           dotnet build --configuration Release && \
-          dotnet lambda package --configuration Release --output-package ./bin/Release/net7.0/package.zip && \
+          dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip && \
           sam build && \
           sam deploy \
             --stack-name ${CF_STACK_FILE_PARSER_2025E} \
