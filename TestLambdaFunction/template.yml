@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An AWS Serverless Application Model template describing your function.
+
+Resources:
+  TestLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Description: ''
+      MemorySize: 200
+      Timeout: 60
+      Handler: index.handler
+      Runtime: dotnet6
+      Architectures:
+        - x86_64
+      EphemeralStorage:
+        Size: 512
+      EventInvokeConfig:
+        MaximumEventAgeInSeconds: 21600
+        MaximumRetryAttempts: 2
+      PackageType: Zip
+      Policies:
+        - AmazonS3ReadOnlyAccess
+        - AWSLambdaBasicExecutionRole
+      SnapStart:
+        ApplyOn: None
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: Auto
+
+
+
+# # This AWS SAM template has been generated from your function's configuration. If
+# # your function has one or more triggers, note that the AWS resources associated
+# # with these triggers aren't fully specified in this template and include
+# # placeholder values. Open this template in AWS Application Composer or your
+# # favorite IDE and modify it to specify a serverless application with other AWS
+# # resources.
+# AWSTemplateFormatVersion: '2010-09-09'
+# Transform: AWS::Serverless-2016-10-31
+# Description: An AWS Serverless Application Model template describing your function.
+
+# Parameters:
+#   VtsId:
+#     Type: String
+#     Description: Verisense Trial Server ID
+#     AllowedPattern: '[0-9]+'
+#     ConstraintDescription: must be a valid VTS ID
+#   AppToken:
+#     Type: String
+#     Description: VTS App Token
+#   DatavantTokenType:
+#     Type: String
+#     Description: Datavant Token Type
+#   DocumentKey:
+#     Type: String
+#     Description: Google Sheet Key
+#   GoogleServiceAccountEmail:
+#     Type: String
+#     Description: Google Service Account Email Address
+#   Source:
+#     Type: String
+#     Description: Data Source
+#   StudyName:
+#     Type: String
+#     Description: Study Name
+
+# Resources:
+#   DhpProcessRegistrationSheet:
+#     Type: AWS::Serverless::Function
+#     Properties:
+#       CodeUri: .
+#       Description: ''
+#       MemorySize: 200
+#       Timeout: 60
+#       Handler: index.handler
+#       Runtime: nodejs20.x
+#       Architectures:
+#         - x86_64
+#       EphemeralStorage:
+#         Size: 512
+#       EventInvokeConfig:
+#         MaximumEventAgeInSeconds: 21600
+#         MaximumRetryAttempts: 2
+#       PackageType: Zip
+#       Policies:
+#         - AmazonS3ReadOnlyAccess
+#         - AWSLambdaBasicExecutionRole
+#       SnapStart:
+#         ApplyOn: None
+#       RuntimeManagementConfig:
+#         UpdateRuntimeOn: Auto
+#       Environment:
+#         Variables:
+#             APP_TOKEN: !Ref AppToken
+#             DATAVANT_TOKEN_TYPE: !Ref DatavantTokenType
+#             DOCUMENT_KEY: !Ref DocumentKey
+#             GOOGLE_SERVICE_ACCOUNT_EMAIL: !Ref GoogleServiceAccountEmail
+#             SOURCE: !Ref Source
+#             STUDY_NAME: !Ref StudyName
+#             TRIAL_SERVER_URL_NUMBER: !Ref VtsId
