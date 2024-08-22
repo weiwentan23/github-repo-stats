@@ -69,7 +69,7 @@ jobs:
             --function-name "TestLambdaFunction" \
             --package "bin/Release/net6.0/TestLambdaFunction.zip" \
             --region "us-east-2" \
-            --role "arn:aws:iam::767397714568:role/deploytest_lambda_s3_exr"
+            --function-role "arn:aws:iam::767397714568:role/deploytest_lambda_s3_exr"
             --function-handler "TestLambdaFunction::TestLambdaFunction.Function::FunctionHandler" \
             --runtime "dotnet6"
 
