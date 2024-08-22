@@ -39,7 +39,6 @@ jobs:
       - name: Install dotnet-lambda tool
         run: |
           dotnet tool install -g Amazon.Lambda.Tools
-          export PATH="$PATH:/home/runner/.dotnet/tools"
 
       - name: Install AWS CLI
         run: |
