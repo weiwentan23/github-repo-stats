@@ -85,9 +85,9 @@ jobs:
           sam build && \
           sam deploy \
             --guided
-            --stack-name ${CF_STACK_FILE_PARSER_2025E} \
+            --stack-name lambda-function-test-deploy \
             --s3-bucket "verisense-assets-0148" \
-            --s3-prefix "sam/${CF_STACK_FILE_PARSER_2025E}" \
+            --s3-prefix "sam/lambda-function-test-deploy" \
             --region "us-east-2" \
             --capabilities CAPABILITY_IAM \
             --no-fail-on-empty-changeset \
