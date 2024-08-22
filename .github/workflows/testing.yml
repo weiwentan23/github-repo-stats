@@ -55,6 +55,13 @@ jobs:
           aws-secret-access-key: ${{ github.event.inputs.aws_secret_access_key }}
           aws-region: us-east-2
 
+      - name: "[File Parser 2025E] Deploy Lambda Function"
+        working-directory: ./TestLambdaFunction
+        run: |
+          dotnet restore && \
+          dotnet build --configuration Release && \
+          dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip && \
+
       - name: Deploy to Lambda
         working-directory: ./TestLambdaFunction
         run: |
