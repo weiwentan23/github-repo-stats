@@ -68,7 +68,8 @@ jobs:
           dotnet lambda deploy-function \
             --function-name "TestLambdaFunction" \
             --package "bin/Release/net6.0/TestLambdaFunction.zip" \
-            --region "us-east-2"
+            --region "us-east-2" \
+            --role "arn:aws:iam::767397714568:role/deploytest_lambda_s3_exr"
 
 
       # - name: "[File Parser 2025E] Deploy Lambda Function"
