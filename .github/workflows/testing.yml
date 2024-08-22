@@ -41,21 +41,6 @@ jobs:
           dotnet tool install -g Amazon.Lambda.Tools
           export PATH="$PATH:/home/runner/.dotnet/tools"
 
-      # - name: Restore .NET dependencies
-      #   run: |
-      #     cd TestLambdaFunction
-      #     dotnet restore
-
-      # - name: Build .NET project
-      #   run: |
-      #     cd TestLambdaFunction
-      #     dotnet build --configuration Release
-
-      # - name: Package Lambda function
-      #   run: |
-      #     cd TestLambdaFunction
-      #     dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip
-
       - name: Install AWS CLI
         run: |
           sudo apt-get update
