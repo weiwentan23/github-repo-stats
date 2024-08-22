@@ -84,7 +84,6 @@ jobs:
           dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip && \
           sam build && \
           sam deploy \
-            --guided
             --stack-name lambda-function-test-deploy \
             --s3-bucket "verisense-assets-0148" \
             --s3-prefix "sam/lambda-function-test-deploy" \
