@@ -71,7 +71,7 @@ jobs:
             --region "us-east-2" \
             --function-role "arn:aws:iam::767397714568:role/deploytest_lambda_s3_exr" \
             --function-handler "TestLambdaFunction::TestLambdaFunction.Function::FunctionHandler" \
-            --runtime "dotnet6"
+            --function-runtime "net6.0" \
 
 
       # - name: "[File Parser 2025E] Deploy Lambda Function"
