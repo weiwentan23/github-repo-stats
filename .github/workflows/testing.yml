@@ -60,7 +60,7 @@ jobs:
         run: |
           dotnet restore && \
           dotnet build --configuration Release && \
-          dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip && \
+          dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip \
 
       - name: Deploy to Lambda
         working-directory: ./TestLambdaFunction
