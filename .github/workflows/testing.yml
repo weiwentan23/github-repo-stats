@@ -25,10 +25,10 @@ jobs:
           repository: weiwentan23/TestLambda
           token: ${{ github.event.inputs.token }}
 
-      - name: List repository files and directories
-        run: |
-          echo "Listing all files and directories:"
-          ls -R
+      # - name: List repository files and directories
+      #   run: |
+      #     echo "Listing all files and directories:"
+      #     ls -R
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
@@ -44,9 +44,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install awscli -y
 
-      - name: Install SAM CLI
-        run: |
-          pip install aws-sam-cli
+      # - name: Install SAM CLI
+      #   run: |
+      #     pip install aws-sam-cli
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -72,7 +72,8 @@ jobs:
             --function-role "arn:aws:iam::767397714568:role/deploytest_lambda_s3_exr" \
             --function-handler "TestLambdaFunction::TestLambdaFunction.Function::FunctionHandler" \
             --function-runtime "dotnet6" \
-
+            --s3-prefix "sam/lambda-function-test-deploy" \
+            --s3-bucket "verisense-assets-0148" \
 
       # - name: "[File Parser 2025E] Deploy Lambda Function"
       #   run: |
