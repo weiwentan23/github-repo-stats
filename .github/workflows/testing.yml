@@ -72,19 +72,23 @@ jobs:
           aws-secret-access-key: ${{ github.event.inputs.aws_secret_access_key }}
           aws-region: us-east-2
 
-      - name: "[File Parser 2025E] Deploy Lambda Function"
-        run: |
-          cd TestLambdaFunction && \
-          dotnet restore && \
-          dotnet build --configuration Release && \
-          dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip && \
-          sam build && \
-          sam deploy \
-            --guided
-            --stack-name ${CF_STACK_FILE_PARSER_2025E} \
-            --s3-bucket "verisense-assets-0148" \
-            --s3-prefix "sam/${CF_STACK_FILE_PARSER_2025E}" \
-            --region "us-east-2" \
-            --capabilities CAPABILITY_IAM \
-            --no-fail-on-empty-changeset \
-            --no-confirm-changeset \
+      - name: Deploy to Lambda
+        working-directory: ./TestLambdaFunction
+        run: dotnet lambda deploy-serverless
+
+      # - name: "[File Parser 2025E] Deploy Lambda Function"
+      #   run: |
+      #     cd TestLambdaFunction && \
+      #     dotnet restore && \
+      #     dotnet build --configuration Release && \
+      #     dotnet lambda package --configuration Release --output-package ./bin/Release/net6.0/package.zip && \
+      #     sam build && \
+      #     sam deploy \
+      #       --guided
+      #       --stack-name ${CF_STACK_FILE_PARSER_2025E} \
+      #       --s3-bucket "verisense-assets-0148" \
+      #       --s3-prefix "sam/${CF_STACK_FILE_PARSER_2025E}" \
+      #       --region "us-east-2" \
+      #       --capabilities CAPABILITY_IAM \
+      #       --no-fail-on-empty-changeset \
+      #       --no-confirm-changeset \
